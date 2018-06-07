@@ -2,7 +2,6 @@ package com.saver12;
 
 import com.licel.jcardsim.io.CAD;
 import com.licel.jcardsim.io.JavaxSmartCardInterface;
-import com.licel.jcardsim.samples.HelloWorldApplet;
 import javacard.framework.AID;
 import org.junit.Test;
 
@@ -33,5 +32,13 @@ public class Main {
         response = simulator.transmitCommand(new CommandAPDU(0x01, 0x01, 0x01, 0x00, ("Hello javacard world !").getBytes()));
         assertEquals(0x9000, response.getSW());
         assertEquals("Hello javacard world !", new String(response.getData()));
+
+        ///////////////////////////////
+
+        response = simulator.transmitCommand(new CommandAPDU(0x01, 0x09, 0x01, 0x00));
+        assertEquals(0x9000, response.getSW());
+        byte[] data = response.getData();
+        short bufferSize = (short) ((data[0] << 8) | (data[1] & 0xff));
+        assertEquals(bufferSize, 260);
     }
 }
